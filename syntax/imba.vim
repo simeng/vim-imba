@@ -8,36 +8,96 @@
 "
 " Based on work from sublime syntax file
 "   https://github.com/somebee/sublime-imba/blob/master/Imba.sublime-syntax
+" And coffee script vim syntax
+"   https://github.com/kchmck/vim-coffee-script/blob/master/syntax/coffee.vim
 
-if exists("b:current_syntax")
+if exists("b:current_syn")
 	finish
 endif
 
-syntax keyword imbaBoolean true false
-syntax keyword imbaKeyword if else elif unless for while
-syntax keyword imbaKeyword return until switch then when 
-syntax keyword imbaKeyword try catch finally continue break throw 
-syntax keyword imbaKeyword do await typeof class
-syntax keyword imbaKeyword import
+" Group definitions
 
-syntax keyword imbaClass Math console
+syn keyword imbaBoolean true false yes no on off
+hi def link imbaBoolean Boolean
 
-syntax keyword imbaFunction log warn
-syntax keyword imbaFunction sin cos
-syntax keyword imbaFunction append
+syn keyword imbaKeyword import await typeof class extends super yield new in of by and or not is isnt isa def var let tagdef expr
+hi def link imbaKeyword Keyword
 
-syntax match imbaNumber "-\=\<\d\+L\=\>\|0[xX][0-9a-fA-F]\+\>"
+syn keyword imbaConditional if else elif unless switch then when 
+hi def link imbaConditional Conditional
 
-syntax region String matchgroup=Quote start=/"/  skip=/\\"/  end=/"/
+syn keyword imbaStatement continue break throw return
+hi def link imbaStatement Statement
 
-syntax match Comment "//.*"
-syntax region Comment start=/\/\*/ end=/\*\//
+syn keyword imbaRepeat do for while until 
+hi def link imbaRepeat Repeat
 
-highlight link imbaKeyword Keyword
-highlight link imbaFunction Function
-highlight link imbaClass StorageClass
-highlight link imbaBoolean Boolean
-highlight link imbaNumber Number
+syn keyword imbaException try catch finally 
+hi def link imbaException Exception
 
-let b:current_syntax = "imba"
+syn keyword imbaClass Math console
+hi def link imbaClass StorageClass
+
+syn keyword imbaFunction log warn
+syn keyword imbaFunction sin cos
+syn keyword imbaFunction append
+hi def link imbaFunction Function
+
+syn match imbaNumber "-\=\<\d\+L\=\>\|0[xX][0-9a-fA-F]\+\>"
+syn match imbaNumber /\<\%(Infinity\|NaN\)\>/ display
+hi def link imbaNumber Number
+
+syn match imbaFloat /\%(\i\|\$\)\@<![-+]\?\d*\.\@<!\.\d\+\%([eE][+-]\?\d\+\)\?/ display
+hi def link imbaFloat Float
+
+syn region String matchgroup=Quote start=/"/  skip=/\\"/  end=/"/
+
+syn match Comment "//.*"
+syn match Comment "#.*"
+syn region Comment start=/\/\*/ end=/\*\//
+syn region Comment start=/###/ end=/###/
+
+syn match imbaOperator /\<\%(instanceof\|typeof\|delete\)\>/ display
+hi def link imbaOperator Operator
+
+" The first case matches symbol operators only if they have an operand before.
+syn match imbaExtendedOp /\%(\S\s*\)\@<=[+\-*/%&|\^=!<>?.]\{-1,}\|[-=]>\|--\|++\|:/ display
+syn match imbaExtendedOp /\<\%(and\|or\)=/ display
+hi def link imbaExtendedOp imbaOperator
+
+syn match imbaSpecialOp /[,;]/ display
+hi def link imbaSpecialOp SpecialChar
+
+syn match imbaSpecialVar /\<\%(this\|prototype\|arguments\)\>/ display
+hi def link imbaSpecialVar Special
+
+syn match imbaSpecialIdent /@\%(\%(\I\|\$\)\%(\i\|\$\)*\)\?/ display
+hi def link imbaSpecialIdent Identifier
+
+syn match imbaGlobal /\<\%(null\|undefined\)\>/ display
+hi def link imbaGlobal Type
+
+syn match imbaConstant /\<\u[A-Z0-9_]\+\>/ display
+hi def link imbaConstant Constant
+
+syn match imbaObject /\<\u\w*\>/ display
+hi def link imbaObject Structure
+
+syn cluster imbaIdentifier contains=imbaSpecialVar,imbaSpecialIdent,imbaObject,imbaConstant 
+
+syn match imbaObjAssign /@\?\%(\I\|\$\)\%(\i\|\$\)*\s*\ze::\@!/ contains=@imbaIdentifier display
+hi def link imbaObjAssign Identifier
+
+" Tags (html-like markup)
+
+
+
+" Error marking
+
+syn match imbaSemicolonError /;$/ display
+hi def link imbaSemicolonError Error
+
+" Cleanup
+
+let b:current_syn = "imba"
 
