@@ -20,7 +20,13 @@ endif
 syn keyword imbaBoolean true false yes no on off
 hi def link imbaBoolean Boolean
 
-syn keyword imbaKeyword import await typeof class extends super yield new in of by and or not is isnt isa def var let tagdef expr
+syn keyword imbaKeyword import await typeof extends super yield new in self
+syn keyword imbaKeyword of by and or not is isnt isa var let tagdef expr
+
+syn match imbaMethod /\w\+/ display contained
+hi def link imbaMethod Structure
+
+syn keyword imbaKeyword def class nextgroup=imbaMethod skipwhite
 hi def link imbaKeyword Keyword
 
 syn keyword imbaConditional if else elif unless switch then when 
@@ -50,12 +56,17 @@ hi def link imbaNumber Number
 syn match imbaFloat /\%(\i\|\$\)\@<![-+]\?\d*\.\@<!\.\d\+\%([eE][+-]\?\d\+\)\?/ display
 hi def link imbaFloat Float
 
-syn region String matchgroup=Quote start=/"/  skip=/\\"/  end=/"/
+syn region imbaStringVar start="{"hs=s+1 end="}"he=e-1 contained
+syn region String matchgroup=Quote start=/"/  skip=/\\"/  end=/"/ contains=imbaStringVar
+syn region String matchgroup=Quote start=/'/  skip=/\\'/  end=/'/ 
 
-syn match Comment "//.*"
-syn match Comment "#.*"
-syn region Comment start=/\/\*/ end=/\*\//
-syn region Comment start=/###/ end=/###/
+syn keyword imbaTodo TODO FIXME TBD XXX HACK contained
+
+syn match Comment "//.*" contains=imbaTodo display
+syn match Comment "#.*" contains=imbaTodo display
+syn region Comment start=/\/\*/ end=/\*\// contains=imbaTodo
+syn region Comment start=/###/ end=/###/ contains=imbaTodo
+hi def link imbaTodo Todo
 
 syn match imbaOperator /\<\%(instanceof\|typeof\|delete\)\>/ display
 hi def link imbaOperator Operator
@@ -65,8 +76,11 @@ syn match imbaExtendedOp /\%(\S\s*\)\@<=[+\-*/%&|\^=!<>?.]\{-1,}\|[-=]>\|--\|++\
 syn match imbaExtendedOp /\<\%(and\|or\)=/ display
 hi def link imbaExtendedOp imbaOperator
 
+syn region imbaRegex start=/\// end=/\// display
+hi def link imbaRegex Keyword
+
 syn match imbaSpecialOp /[,;]/ display
-hi def link imbaSpecialOp SpecialChar
+hi def link imbaSpecialOp Delimiter
 
 syn match imbaSpecialVar /\<\%(this\|prototype\|arguments\)\>/ display
 hi def link imbaSpecialVar Special
@@ -80,9 +94,6 @@ hi def link imbaGlobal Type
 syn match imbaConstant /\<\u[A-Z0-9_]\+\>/ display
 hi def link imbaConstant Constant
 
-syn match imbaObject /\<\u\w*\>/ display
-hi def link imbaObject Structure
-
 syn cluster imbaIdentifier contains=imbaSpecialVar,imbaSpecialIdent,imbaObject,imbaConstant 
 
 syn match imbaObjAssign /@\?\%(\I\|\$\)\%(\i\|\$\)*\s*\ze::\@!/ contains=@imbaIdentifier display
@@ -90,7 +101,9 @@ hi def link imbaObjAssign Identifier
 
 " Tags (html-like markup)
 
-
+syn match imbaTagValue "=[\t ]*" contained
+syn match imbaTags /\w+/ contained contains=imbaTagValue
+syn region Tag start=/</ end=/>/ contains=imbaTags
 
 " Error marking
 
