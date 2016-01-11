@@ -1,0 +1,29 @@
+Test for vim-imba
+
+Many test
+  :set ft=imba
+  > ilet awd = 'test'<CR><Esc>
+  let awd = 'test'
+  &
+  @clear
+
+Make sure functions get properly indented
+  :set ft=imba
+  > idef run<CR>
+  |test<Esc>
+  def run
+    test
+  @clear
+
+Make sure tags get properly indented
+  :set ft=imba
+  > i
+  |tag clock<CR>
+  |prop awdawd<CR><CR>
+  |def render<CR>
+  |let martin = 'best'<Esc>
+  tag clock
+    prop awdawd
+  &
+    def render
+      let martin = 'best'

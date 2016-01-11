@@ -26,7 +26,7 @@ syn keyword imbaKeyword of by and or not is isnt isa var let tagdef expr
 syn match imbaMethod /\w\+/ display contained
 hi def link imbaMethod Structure
 
-syn keyword imbaKeyword def class nextgroup=imbaMethod skipwhite
+syn keyword imbaKeyword def class tag prop nextgroup=imbaMethod skipwhite
 hi def link imbaKeyword Keyword
 
 syn keyword imbaConditional if else elif unless switch then when 
@@ -57,8 +57,8 @@ syn match imbaFloat /\%(\i\|\$\)\@<![-+]\?\d*\.\@<!\.\d\+\%([eE][+-]\?\d\+\)\?/ 
 hi def link imbaFloat Float
 
 syn region imbaStringVar start="{"hs=s+1 end="}"he=e-1 contained
-syn region String matchgroup=Quote start=/"/  skip=/\\"/  end=/"/ contains=imbaStringVar
-syn region String matchgroup=Quote start=/'/  skip=/\\'/  end=/'/ 
+syn region String start=/"/  skip=/\\"/  end=/"/ contains=imbaStringVar,@Spell
+syn region String start=/'/  skip=/\\'/  end=/'/ contains=imbaStringVar,@Spell
 
 syn keyword imbaTodo TODO FIXME TBD XXX HACK contained
 
