@@ -76,7 +76,7 @@ syn match imbaExtendedOp /\%(\S\s*\)\@<=[+\-*/%&|\^=!<>?.]\{-1,}\|[-=]>\|--\|++\
 syn match imbaExtendedOp /\<\%(and\|or\)=/ display
 hi def link imbaExtendedOp imbaOperator
 
-syn region imbaRegex start=/\// end=/\// display
+syn region imbaRegex start=/\// end=/\// display oneline
 hi def link imbaRegex Keyword
 
 syn match imbaSpecialOp /[,;]/ display
@@ -103,7 +103,7 @@ hi def link imbaObjAssign Identifier
 
 syn match imbaTagValue "=[\t ]*" contained
 syn match imbaTags /\w+/ contained contains=imbaTagValue
-syn region Tag start=/</ end=/>/ contains=imbaTags
+syn region Tag start=/</ end=/>/ contains=imbaTags oneline
 
 " Error marking
 
