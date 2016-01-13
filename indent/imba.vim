@@ -1,3 +1,5 @@
+" vim: sw=2
+
 if exists("b:did_indent")
   finish
 endif
@@ -16,9 +18,24 @@ function ImbaIndent(lnum)
   let pline = getline(plnum)
   let plindent = indent(plnum)
 
-  " Indent tag and function content
-  if pline =~ '^.*\<\(def\|tag\)\>'
-      return plindent + shiftwidth()
+  " Indent if previous line matches this
+  if pline =~ '^.*\<\(def\|tag\|class\|if\|else\|elif\|for\|while\|until\|switch\|case\|try\|catch\|finally\)\>'
+    return plindent + shiftwidth()
+  endif
+
+  " Deintent current line if it matches this
+  if getline(v:lnum) =~ '^\s*\(catch\|finally\|else\|elif\|when\)\>'
+    return indent(v:lnum) - shiftwidth()
+  endif
+
+  " Deintent line after return
+  if pline =~ '^\s*return\>'
+    return plindent - shiftwidth()
+  endif
+
+  " Deintet if second empty line
+  if getline(v:lnum - 1) =~ '^\s*$' && getline(v:lnum - 2) =~ '^\s*$'
+    return plindent - shiftwidth()
   endif
 
   return -1
