@@ -100,10 +100,18 @@ syn match imbaObjAssign /@\?\%(\I\|\$\)\%(\i\|\$\)*\s*\ze::\@!/ contains=@imbaId
 hi def link imbaObjAssign Identifier
 
 " Tags (html-like markup)
+" From http://stackoverflow.com/a/13620967 and html.vim
+syn match imbaTagAttributeName /\w\+=/he=e-1 contained
+syn match imbaTagAttribute contained "\w\+=[^"]\S\+" contains=imbaTagAttributeName,String,imbaBoolean,Variable
+syn region imbaTagAttribute contained start=+\w\+="+ skip=+\\\\\|\\"+ end=+"+ contains=imbaTagAttributeName,String,imbaBoolean,Variable keepend
+syn match imbaTagName /<\i\+/ contained contains=imbaTagStart
+syn region imbaTag start=/</ end=/>/ contains=imbaTagName,imbaTagAttribute oneline
+syn match imbaTagStart '<' contained
 
-syn match imbaTagValue "=[\t ]*" contained
-syn match imbaTags /\w+/ contained contains=imbaTagValue
-syn region Tag start=/</ end=/>/ contains=imbaTags oneline
+hi def link imbaTag Function
+hi def link imbaTagStart Function
+hi def link imbaTagName Statement
+hi def link imbaTagAttributeName Type
 
 " Error marking
 
