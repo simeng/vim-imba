@@ -20,14 +20,16 @@ endif
 syn keyword imbaBoolean true false yes no on off
 hi def link imbaBoolean Boolean
 
-syn keyword imbaKeyword import await typeof extends super yield new in self
+syn keyword imbaKeyword import await typeof extends super yield new in
 syn keyword imbaKeyword of by and or not is isnt isa var let tagdef expr
 
 syn match imbaMethod /\w\+/ display contained
-hi def link imbaMethod Structure
+hi def link imbaMethod Function
 
-syn keyword imbaKeyword def class tag prop nextgroup=imbaMethod skipwhite
-hi def link imbaKeyword Keyword
+syn keyword imbaKeyword def class tag nextgroup=imbaMethod skipwhite
+hi def link imbaKeyword Structure
+
+syn keyword Structure prop
 
 syn keyword imbaConditional if else elif unless switch then when 
 hi def link imbaConditional Conditional
@@ -40,9 +42,6 @@ hi def link imbaRepeat Repeat
 
 syn keyword imbaException try catch finally 
 hi def link imbaException Exception
-
-syn keyword imbaClass Math console
-hi def link imbaClass StorageClass
 
 syn keyword imbaFunction log warn
 syn keyword imbaFunction sin cos
@@ -82,7 +81,7 @@ hi def link imbaRegex Keyword
 syn match imbaSpecialOp /[,;]/ display
 hi def link imbaSpecialOp Delimiter
 
-syn match imbaSpecialVar /\<\%(this\|prototype\|arguments\)\>/ display
+syn keyword imbaSpecialVar this prototype arguments self Math console
 hi def link imbaSpecialVar Special
 
 syn match imbaSpecialIdent /@\%(\%(\I\|\$\)\%(\i\|\$\)*\)\?/ display

@@ -19,7 +19,7 @@ function ImbaIndent(lnum)
   let plindent = indent(plnum)
 
   " Indent if previous line matches this
-  if pline =~ '^.*\<\(def\|tag\|class\|if\|else\|elif\|for\|while\|until\|switch\|case\|try\|catch\|finally\)\>'
+  if pline =~ '^.*\<\(def\|tag\|class\|if\|else\|elif\|for\|while\|until\|switch\|case\|try\|catch\|finally\|do\)\>'
     return plindent + shiftwidth()
   endif
 
