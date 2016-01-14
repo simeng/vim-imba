@@ -27,3 +27,29 @@ Make sure tags get properly indented
   &
     def render
       let martin = 'best'
+  @clear
+
+Make sure ifs get amazingly indented
+  :set ft=imba
+  > i
+  |if martin == 'awesome'<CR>
+  |self.dootdoot<CR>
+  |else<CR>
+  |self.playMusic verySadMusic<Esc>
+  if martin == 'awesome'
+    self.dootdoot
+  else
+    self.playMusic verySadMusic
+  @clear
+
+Make sure the line after two empty lines is deintented
+  :set ft=imba
+  > i
+  |  def run<CR>oioi<CR><CR><CR>awdawd<Esc>
+    def run
+      oioi
+  &
+  &
+    awdawd
+  @clear
+
