@@ -75,8 +75,9 @@ syn match imbaExtendedOp /\%(\S\s*\)\@<=[+\-*/%&|\^=!<>?.]\{-1,}\|[-=]>\|--\|++\
 syn match imbaExtendedOp /\<\%(and\|or\)=/ display
 hi def link imbaExtendedOp imbaOperator
 
-syn region imbaRegex start=/\// end=/\// display oneline
-hi def link imbaRegex Keyword
+" Regex-regex from javascript.vim
+syn region imbaRegex start=+/[^/*]+me=e-1 skip=+\\\\\|\\/+ end=+/[gim]\{0,2\}\s*$+ end=+/[gim]\{0,2\}\s*[;.,)\]}]+me=e-1 oneline
+hi def link imbaRegex String
 
 syn match imbaSpecialOp /[,;]/ display
 hi def link imbaSpecialOp Delimiter
@@ -104,7 +105,7 @@ syn match imbaTagAttributeName /\w\+=/he=e-1 contained
 syn match imbaTagAttribute contained "\w\+=[^"]\S\+" contains=imbaTagAttributeName,String,imbaBoolean,Variable
 syn region imbaTagAttribute contained start=+\w\+="+ skip=+\\\\\|\\"+ end=+"+ contains=imbaTagAttributeName,String,imbaBoolean,Variable keepend
 syn match imbaTagName /<\i\+/ contained contains=imbaTagStart
-syn region imbaTag start=/</ end=/>/ contains=imbaTagName,imbaTagAttribute oneline
+syn region imbaTag start=/<\w\+/ end=/>/ contains=imbaTagName,imbaTagAttribute
 syn match imbaTagStart '<' contained
 
 hi def link imbaTag Function
@@ -116,6 +117,9 @@ hi def link imbaTagAttributeName Type
 
 syn match imbaSemicolonError /;$/ display
 hi def link imbaSemicolonError Error
+
+syn match imbaWrongComment /^\s*\/\/.*$/ display
+hi def link imbaWrongComment Error
 
 " Cleanup
 

@@ -38,7 +38,7 @@ function ImbaIndent(lnum)
     return plindent - shiftwidth()
   endif
 
-  return -1
+  return plindent
 
 endfunction
 
