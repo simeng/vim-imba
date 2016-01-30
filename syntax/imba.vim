@@ -20,14 +20,16 @@ endif
 syn keyword imbaBoolean true false yes no on off
 hi def link imbaBoolean Boolean
 
-syn keyword imbaKeyword import await typeof extends super yield new in self
+syn keyword imbaKeyword import await typeof extends super yield new in
 syn keyword imbaKeyword of by and or not is isnt isa var let tagdef expr
 
 syn match imbaMethod /\w\+/ display contained
-hi def link imbaMethod Structure
+hi def link imbaMethod Function
 
-syn keyword imbaKeyword def class tag prop nextgroup=imbaMethod skipwhite
-hi def link imbaKeyword Keyword
+syn keyword imbaKeyword def class tag nextgroup=imbaMethod skipwhite
+hi def link imbaKeyword Structure
+
+syn keyword Structure prop
 
 syn keyword imbaConditional if else elif unless switch then when 
 hi def link imbaConditional Conditional
@@ -40,9 +42,6 @@ hi def link imbaRepeat Repeat
 
 syn keyword imbaException try catch finally 
 hi def link imbaException Exception
-
-syn keyword imbaClass Math console
-hi def link imbaClass StorageClass
 
 syn keyword imbaFunction log warn
 syn keyword imbaFunction sin cos
@@ -76,13 +75,14 @@ syn match imbaExtendedOp /\%(\S\s*\)\@<=[+\-*/%&|\^=!<>?.]\{-1,}\|[-=]>\|--\|++\
 syn match imbaExtendedOp /\<\%(and\|or\)=/ display
 hi def link imbaExtendedOp imbaOperator
 
-syn region imbaRegex start=/\// end=/\// display
-hi def link imbaRegex Keyword
+" Regex-regex from javascript.vim
+syn region imbaRegex start=+/[^/*]+me=e-1 skip=+\\\\\|\\/+ end=+/[gim]\{0,2\}\s*$+ end=+/[gim]\{0,2\}\s*[;.,)\]}]+me=e-1 oneline
+hi def link imbaRegex String
 
 syn match imbaSpecialOp /[,;]/ display
 hi def link imbaSpecialOp Delimiter
 
-syn match imbaSpecialVar /\<\%(this\|prototype\|arguments\)\>/ display
+syn keyword imbaSpecialVar this prototype arguments self Math console
 hi def link imbaSpecialVar Special
 
 syn match imbaSpecialIdent /@\%(\%(\I\|\$\)\%(\i\|\$\)*\)\?/ display
@@ -100,15 +100,26 @@ syn match imbaObjAssign /@\?\%(\I\|\$\)\%(\i\|\$\)*\s*\ze::\@!/ contains=@imbaId
 hi def link imbaObjAssign Identifier
 
 " Tags (html-like markup)
+" From http://stackoverflow.com/a/13620967 and html.vim
+syn match imbaTagAttributeName /\w\+=/he=e-1 contained
+syn match imbaTagAttribute contained "\w\+=[^"]\S\+" contains=imbaTagAttributeName,String,imbaBoolean,Variable
+syn region imbaTagAttribute contained start=+\w\+="+ skip=+\\\\\|\\"+ end=+"+ contains=imbaTagAttributeName,String,imbaBoolean,Variable keepend
+syn match imbaTagName /<\i\+/ contained contains=imbaTagStart
+syn region imbaTag start=/<\w\+/ end=/>/ contains=imbaTagName,imbaTagAttribute
+syn match imbaTagStart '<' contained
 
-syn match imbaTagValue "=[\t ]*" contained
-syn match imbaTags /\w+/ contained contains=imbaTagValue
-syn region Tag start=/</ end=/>/ contains=imbaTags
+hi def link imbaTag Function
+hi def link imbaTagStart Function
+hi def link imbaTagName Statement
+hi def link imbaTagAttributeName Type
 
 " Error marking
 
 syn match imbaSemicolonError /;$/ display
 hi def link imbaSemicolonError Error
+
+syn match imbaWrongComment /^\s*\/\/.*$/ display
+hi def link imbaWrongComment Error
 
 " Cleanup
 
